@@ -52,29 +52,21 @@ allPhotoCompletionhandler:(void(^)(NSArray <PhotoModel *>*models))completion_blo
 {
     for (PHCollection *collection in [self allCollections])
     {
-        if ([collection.localizedTitle isEqualToString:@"All Photos"]) {
+        if ([collection.localizedTitle isEqualToString:@"All Photos"]||[collection.localizedTitle isEqualToString:@"Camera Roll"]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
             PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
             if (fetchResult.count > 0)
             {
                 NSArray *assets = [self allPhotosAssetInAblumCollection:(PHAssetCollection *)collection ascending:NO];
                 NSMutableArray *models = [NSMutableArray array];
-                for (PHAsset *asset in assets)
+                for (PHAsset *asset in assets) {
+                    PhotoModel *model = [[PhotoModel alloc]init];
+                    model.asset = asset;
+                    [models addObject:model];
+                }
+                if (completion_block)
                 {
-                    [self accessToImageAccordingToTheAsset:asset size:size resizeMode:resizeMode completion:^(UIImage *image, NSDictionary *info) {
-                        if (models.count < assets.count) {
-                            PhotoModel *model = [[PhotoModel alloc]init];
-                            model.asset = asset;
-                            model.image = image;
-                            [models addObject:model];
-                        }else if (models.count == assets.count)
-                        {
-                            if (completion_block)
-                            {
-                                completion_block(models);
-                            }
-                        }
-                    }];
+                    completion_block(models);
                 }
             }
             else
@@ -87,6 +79,8 @@ allPhotoCompletionhandler:(void(^)(NSArray <PhotoModel *>*models))completion_blo
         }
     }
 }
+
+
 
 + (NSArray <PHAsset *>*)allPhotosAssetInAblumCollection:(PHAssetCollection *)assetCollection ascending:(BOOL)ascending
 {
@@ -129,4 +123,3 @@ allPhotoCompletionhandler:(void(^)(NSArray <PhotoModel *>*models))completion_blo
 }
 
 @end
-

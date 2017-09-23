@@ -53,7 +53,17 @@ UICollectionViewDelegateFlowLayout>
 {
     PhotoCollectionViewCell *photoCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     PhotoModel *model = self.allPhotos[indexPath.row];
-    photoCell.imageView.image = model.image;
+    if (model.image == nil)
+    {
+        [PhotosHelper accessToImageAccordingToTheAsset:model.asset size:CGSizeMake(50, 50) resizeMode:PHImageRequestOptionsResizeModeFast completion:^(UIImage *image, NSDictionary *info) {
+            model.image = image;
+            photoCell.imageView.image = model.image;
+        }];
+    }
+    else
+    {
+        photoCell.imageView.image = model.image;
+    }
     return photoCell;
 }
 

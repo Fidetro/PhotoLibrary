@@ -31,7 +31,7 @@
  @param ascending 排序方式
  @param size 图片大小
  @param resizeMode 图片模式
- @param completion_block 完成的回调
+ @param completion_block 完成的回调,这里返回的PhotoModel.image是空的，需要自己主动去获取
  */
 + (void)ascending:(BOOL)ascending
              size:(CGSize)size
