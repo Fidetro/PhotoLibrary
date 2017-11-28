@@ -12,19 +12,39 @@
 @end
 @implementation PhotosHelper
 
-+ (BOOL)authorizationStatus
+
++ (void)requestPhotoAuthorizationStatus:(void(^)(BOOL result))request_block
 {
-    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
-    // 如果没有获取访问授权，或者访问授权状态已经被明确禁止，则显示提示语，引导用户开启授权
-    if (authorizationStatus == PHAuthorizationStatusRestricted || authorizationStatus == PHAuthorizationStatusDenied) {
+    
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            if (request_block)
+            {
+                if (status == PHAuthorizationStatusAuthorized) {
+                    request_block(YES);
+                }else{
+                    request_block(NO);
+                }
+                
+            }
+        }];
         
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
+    }];
+    
 }
+
+
++ (void)requestCameraAuthorizationStatus:(void(^)(BOOL result))request_block{
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            if (request_block)
+            {
+                request_block(granted);
+            }
+        }];
+    }];
+}
+
 
 + (NSArray <PHAssetCollection *>*)allCollections
 {

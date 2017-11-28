@@ -17,11 +17,13 @@
 
 @interface PhotosHelper : NSObject
 /**
- 检测相册权限是否打开，不包括相机
- 
- @return 是否打开
+ 检测相册权限是否打开
  */
-+ (BOOL)authorizationStatus;
++ (void)requestPhotoAuthorizationStatus:(void(^)(BOOL result))request_block;
+/**
+ 检测相机权限是否打开
+ */
++ (void)requestCameraAuthorizationStatus:(void(^)(BOOL result))request_block;
 
 + (NSArray <PHAssetCollection *>*)allCollections;
 

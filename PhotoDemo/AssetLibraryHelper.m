@@ -21,7 +21,6 @@
     ALAuthorizationStatus authorizationStatus = [ALAssetsLibrary authorizationStatus];
     // 如果没有获取访问授权，或者访问授权状态已经被明确禁止，则显示提示语，引导用户开启授权
     if (authorizationStatus == ALAuthorizationStatusRestricted || authorizationStatus == ALAuthorizationStatusDenied) {
-        NSDictionary *mainInfoDictionary = [[NSBundle mainBundle] infoDictionary];
 
         return NO;
     }
