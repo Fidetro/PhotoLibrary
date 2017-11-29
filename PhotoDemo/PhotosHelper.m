@@ -72,7 +72,7 @@ allPhotoCompletionhandler:(void(^)(NSArray <PhotoModel *>*models))completion_blo
 {
     for (PHCollection *collection in [self allCollections])
     {
-        if ([collection.localizedTitle isEqualToString:@"All Photos"]||[collection.localizedTitle isEqualToString:@"Camera Roll"]) {
+        if ([collection.localizedTitle isEqualToString:@"All Photos"]||[collection.localizedTitle isEqualToString:@"Camera Roll"]||[collection.localizedTitle isEqualToString:@"所有照片"]||[collection.localizedTitle isEqualToString:@"相机胶卷"]) {
             PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
             PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
             if (fetchResult.count > 0)
